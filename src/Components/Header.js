@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { gql } from 'apollo-boost';
@@ -50,7 +50,7 @@ const ME = gql`
 `;
 
 export default ({ isLoggedIn }) => {
-  const { loading, data, error, refetch } = useQuery(ME);
+  const { loading, data, refetch } = useQuery(ME);
   //   if (loading) {
   //     return null;
   //   }

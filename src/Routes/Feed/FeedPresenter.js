@@ -1,7 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import Input from '../../Components/Input';
-import Button from '../../Components/Button';
 import QuestCard from '../../Components/QuestCard';
 
 const Wrapper = styled.div`
@@ -43,8 +41,8 @@ export default ({ myQuests }) => {
       </Board>
       <Title>기록</Title>
       <Board>
-        {myQuests.myQuests.map((quest) => (
-          <QuestCard quest={quest} />
+        {myQuests.myQuests.map((quest, index) => (
+          <QuestCard quest={quest} key={`${index}-quest`} />
         ))}
       </Board>
     </Wrapper>

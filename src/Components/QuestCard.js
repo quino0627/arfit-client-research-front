@@ -47,7 +47,7 @@ const QuestCard = ({ quest }) => {
       <Row>
         <ExerciseTitle>{quest.exercise[0].name}</ExerciseTitle>
       </Row>
-      <Row>{moment(Date(quest.when)).format('YYYY년 MM월 DD일')}</Row>
+      <Row>{moment(1 * quest.when).format('YYYY-MM-DD')}</Row>
       <Row>
         {quest.sets} 세트 | {quest.reps} 회 씩 | {quest.weight} kg, 체감 강도:
         {quest.feel}

@@ -6,9 +6,9 @@ import { gql } from 'apollo-boost';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import Button from '../../Components/Button';
 import Slider from '@material-ui/core/Slider';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { feelTitle, feelSub } from '../../feel';
-import { ToastType, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
@@ -208,7 +208,12 @@ export default withRouter(({ history, location }) => {
           {getTodayQuestByCode.getTodayQuestByCode.exercise[0].name}
         </Title>
         <Board>
-          <SemiTitle>✅운동법</SemiTitle>
+          <SemiTitle>
+            <span role="img" aria-label="check">
+              ✅
+            </span>
+            운동법
+          </SemiTitle>
           <br />
           <WordBox>
             {getTodayQuestByCode.getTodayQuestByCode.exercise[0].tips
@@ -216,7 +221,10 @@ export default withRouter(({ history, location }) => {
               .map((line) => {
                 return (
                   <span>
-                    ▶️{line}
+                    <span role="img" aria-label=">">
+                      ▶️
+                    </span>
+                    {line}
                     <br />
                   </span>
                 );
@@ -224,7 +232,12 @@ export default withRouter(({ history, location }) => {
           </WordBox>
 
           <br />
-          <SemiTitle>✅주의사항</SemiTitle>
+          <SemiTitle>
+            <span role="img" aria-label="check">
+              ✅
+            </span>
+            주의사항
+          </SemiTitle>
           <br />
           <WordBox>
             {getTodayQuestByCode.getTodayQuestByCode.exercise[0].caution
@@ -232,7 +245,10 @@ export default withRouter(({ history, location }) => {
               .map((line) => {
                 return (
                   <span>
-                    ▶️{line}
+                    <span role="img" aria-label=">">
+                      ▶️
+                    </span>
+                    {line}
                     <br />
                   </span>
                 );
@@ -241,15 +257,24 @@ export default withRouter(({ history, location }) => {
         </Board>
         <Board>
           <Title>
-            1️⃣{getTodayQuestByCode.getTodayQuestByCode.weight}kg으로
+            <span role="img" aria-label="1">
+              1️⃣
+            </span>
+            {getTodayQuestByCode.getTodayQuestByCode.weight}kg으로
             <br />
           </Title>
           <Title>
-            2️⃣{getTodayQuestByCode.getTodayQuestByCode.reps}회씩
+            <span role="img" aria-label="2">
+              2️⃣
+            </span>
+            {getTodayQuestByCode.getTodayQuestByCode.reps}회씩
             <br />
           </Title>
           <Title>
-            3️⃣{getTodayQuestByCode.getTodayQuestByCode.sets}세트 반복하세요!
+            <span role="img" aria-label="3">
+              3️⃣
+            </span>
+            {getTodayQuestByCode.getTodayQuestByCode.sets}세트 반복하세요!
             <br />
           </Title>
           <br />
