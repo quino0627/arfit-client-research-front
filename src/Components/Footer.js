@@ -29,10 +29,7 @@ export default () => (
   <Footer>
     <List>
       <ListItem>
-        <Link href="#">About us</Link>
-      </ListItem>
-      <ListItem>
-        <Link href="#">About us</Link>
+        <Link href="allnewfit.net">About us</Link>
       </ListItem>
     </List>
     <Copyright>올뉴핏 2020.5 &copy; </Copyright>
