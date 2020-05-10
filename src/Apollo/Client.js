@@ -2,7 +2,7 @@ import ApolloClient from 'apollo-boost';
 import { defaults, resolvers } from './LocalState';
 
 export default new ApolloClient({
-  uri: 'http://15.164.248.119:4000',
+  uri: 'https://arfit-server.herokuapp.com/',
   clientState: {
     defaults,
     resolvers,
