@@ -47,6 +47,11 @@ const Link = styled.span`
   cursor: pointer;
 `;
 
+const Register = styled.a`
+  color: ${(props) => props.theme.blueColor};
+  cursor: pointer;
+`;
+
 export default ({ setAction, action, secret, onLogin }) => {
   return (
     <Wrapper>
@@ -67,7 +72,12 @@ export default ({ setAction, action, secret, onLogin }) => {
         {action === 'logIn' ? (
           <>
             처음이신가요?{' '}
-            <Link onClick={() => setAction('signUp')}>등록하기</Link>
+            <Register
+              target="_blank"
+              href="https://blog.naver.com/swaida/221957216868"
+            >
+              등록하기
+            </Register>
           </>
         ) : (
           <>
