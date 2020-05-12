@@ -288,9 +288,9 @@ export default withRouter(({ history, location }) => {
       <Wrapper>
         <Title>운동은 어떠셨나요?</Title>
         <Box>
-          <Title>{feelTitle[feel]}</Title>
+          <Title>{feelTitle[feel - 1]}</Title>
           <br />
-          <SemiTitle>{feelSub[feel]}</SemiTitle>
+          <SemiTitle>{feelSub[feel - 1]}</SemiTitle>
         </Box>
         <Box>
           <IOSSlider
