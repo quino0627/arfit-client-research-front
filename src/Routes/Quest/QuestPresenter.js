@@ -1,14 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { withRouter } from 'react-router-dom';
-import queryString from 'query-string';
-import { gql } from 'apollo-boost';
-import { useQuery, useMutation } from '@apollo/react-hooks';
-import Button from '../../Components/Button';
+import { Card, Button as AntButton, Spin } from 'antd';
+import Title from 'antd/lib/typography/Title';
 import Slider from '@material-ui/core/Slider';
 import { withStyles } from '@material-ui/core/styles';
-import { feelTitle, feelSub } from '../../feel';
-import { toast } from 'react-toastify';
+import { feelSub, feelTitle } from '../../feel';
+import {
+  OneEmj,
+  TwoEmj,
+  ThreeEmj,
+  Money,
+  Salad,
+  Coffee as Shake,
+  Check,
+  Caution,
+} from '../../Emojies';
+
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
@@ -16,59 +23,6 @@ const Wrapper = styled.div`
   flex-direction: column;
   margin-top: 80px;
   margin-bottom: 40px;
-`;
-
-const Title = styled.span`
-  width: 100%;
-  max-width: 350px;
-  font-weight: 700;
-  font-size: 20px;
-  margin-bottom: 8px;
-`;
-
-const SemiTitle = styled.span`
-  width: 100%;
-  max-width: 350px;
-  font-weight: 400;
-  font-size: 16px;
-  margin-bottom: 8px;
-`;
-
-const Box = styled.div`
-  ${(props) => props.theme.whiteBox};
-  width: 100%;
-  max-width: 350px;
-  padding: 40px 10px 20px 10px;
-`;
-
-const Board = styled(Box)`
-  margin-bottom: 16px;
-  padding: 20px 20px;
-  line-height: 20px;
-`;
-
-const WordBox = styled.div``;
-
-const GET_QUEST_BY_CODE = gql`
-  query getTodayQuestByCode($code: String!) {
-    getTodayQuestByCode(code: $code) {
-      id
-      exercise {
-        name
-        caution
-        tips
-      }
-      sets
-      reps
-      weight
-    }
-  }
-`;
-
-const SUBMIT_QUEST = gql`
-  mutation playQuest($id: Int!, $feel: Int!, $isDone: Boolean!) {
-    playQuest(id: $id, feel: $feel, isDone: $isDone)
-  }
 `;
 
 // code 파라미터는 colorfull
@@ -83,6 +37,7 @@ const IOSSlider = withStyles({
     color: '#3880ff',
     height: 2,
     padding: '15px 0',
+    marginBottom: '30px',
   },
   thumb: {
     height: 28,
@@ -129,170 +84,107 @@ const IOSSlider = withStyles({
   },
 })(Slider);
 
-export default withRouter(({ history, location }) => {
-  const [done, setDone] = useState(false);
-  const [feel, setFeel] = useState(5);
-  const { code } = queryString.parse(location.search);
-  const { loading, error, data: getTodayQuestByCode } = useQuery(
-    GET_QUEST_BY_CODE,
-    {
-      variables: {
-        code,
-      },
-    }
-  );
-
-  const [submitQuestMutation] = useMutation(SUBMIT_QUEST);
-
-  const handleChange = (_, value) => {
-    setFeel(value);
-  };
-
-  const doneQuest = () => {
-    setDone(!done);
-  };
-
-  const submitQuestSuccess = async (e) => {
-    e.preventDefault();
-    try {
-      const {
-        data: { playQuest: result },
-      } = await submitQuestMutation({
-        variables: {
-          id: getTodayQuestByCode.getTodayQuestByCode.id,
-          feel,
-          isDone: true,
-        },
-      });
-      if (result) {
-        toast.success('퀘스트 수행 완료!', { autoClose: 3000 });
-        setTimeout(() => {
-          history.push('/');
-        }, 3000);
-      }
-    } catch (e) {
-      console.log(e);
-      toast.error('완료할 수 없습니다. 잠시 후 다시 시도하세요.');
-    }
-  };
-  const submitQuestFail = async (e) => {
-    e.preventDefault();
-    try {
-      const {
-        data: { playQuest: result },
-      } = await submitQuestMutation({
-        variables: {
-          id: getTodayQuestByCode.getTodayQuestByCode.id,
-          feel,
-          isDone: false,
-        },
-      });
-      if (result) {
-        toast.success('퀘스트 수행 완료!', { autoClose: 3000 });
-        setTimeout(() => {
-          history.push('/');
-        }, 3000);
-      }
-    } catch (e) {
-      console.log(e);
-      toast.error('완료할 수 없습니다. 잠시 후 다시 시도하세요.');
-    }
-  };
-
-  if (loading) return 'loading';
+export default ({
+  getTodayQuestByCode,
+  feel,
+  doneQuest,
+  done,
+  submitQuestSuccess,
+  submitQuestFail,
+  handleChange,
+  loading,
+  error,
+}) => {
+  if (loading)
+    return (
+      <Wrapper className="spinnerWrapper">
+        <Spin tip="로딩중..." />
+      </Wrapper>
+    );
   if (error) return <Wrapper>해당 기구의 퀘스트를 모두 완료했습니다.</Wrapper>;
   if (!done)
     return (
-      <Wrapper>
-        <Title>
-          {getTodayQuestByCode.getTodayQuestByCode.exercise[0].name}
-        </Title>
-        <Board>
-          <SemiTitle>
-            <span role="img" aria-label="check">
-              ✅
-            </span>
-            운동법
-          </SemiTitle>
-          <br />
-          <WordBox>
+      <div className="marginSide underHeader">
+        <Card
+          title={getTodayQuestByCode.getTodayQuestByCode.exercise[0].name}
+          className="marginBottom"
+        >
+          <ul>
             {getTodayQuestByCode.getTodayQuestByCode.exercise[0].tips
               .split('\n')
               .map((line) => {
                 return (
-                  <span>
-                    <span role="img" aria-label=">">
-                      ▶️
-                    </span>
+                  <li>
+                    <Check />
                     {line}
-                    <br />
-                  </span>
+                  </li>
                 );
               })}
-          </WordBox>
+          </ul>
 
           <br />
-          <SemiTitle>
-            <span role="img" aria-label="check">
-              ✅
-            </span>
-            주의사항
-          </SemiTitle>
-          <br />
-          <WordBox>
+
+          <Title level={4}>
+            <Caution />
+            조심하세요
+            <Caution />
+          </Title>
+          <ul>
             {getTodayQuestByCode.getTodayQuestByCode.exercise[0].caution
               .split('\n')
               .map((line) => {
-                return (
-                  <span>
-                    <span role="img" aria-label=">">
-                      ▶️
-                    </span>
-                    {line}
-                    <br />
-                  </span>
-                );
+                return <li>{line}</li>;
               })}
-          </WordBox>
-        </Board>
-        <Board>
-          <Title>
-            <span role="img" aria-label="1">
-              1️⃣
-            </span>
-            {getTodayQuestByCode.getTodayQuestByCode.weight}kg으로
-            <br />
-          </Title>
-          <Title>
-            <span role="img" aria-label="2">
-              2️⃣
-            </span>
-            {getTodayQuestByCode.getTodayQuestByCode.reps}회씩
-            <br />
-          </Title>
-          <Title>
-            <span role="img" aria-label="3">
-              3️⃣
-            </span>
-            {getTodayQuestByCode.getTodayQuestByCode.sets}세트 반복하세요!
-            <br />
-          </Title>
+          </ul>
+        </Card>
+        <Card className="marginBottom">
+          <Title level={4}>수행 내용</Title>
+          <ul>
+            <li>
+              <OneEmj />
+              {getTodayQuestByCode.getTodayQuestByCode.reps}회씩
+            </li>
+            <li>
+              <TwoEmj />
+              {getTodayQuestByCode.getTodayQuestByCode.sets}세트
+            </li>
+            <li>
+              <ThreeEmj />
+              {getTodayQuestByCode.getTodayQuestByCode.weight}kg으로 반복하기
+            </li>
+          </ul>
           <br />
-          <Button text="운동 시작하기!" thick onClick={doneQuest} />
-        </Board>
-      </Wrapper>
+          <Title level={4}>
+            보상
+            <Money />
+          </Title>
+          3일 이상 수행 완료 시, <br />
+          닭가슴살 샐러드
+          <Salad /> 와 프로틴 쉐이크!
+          <Shake />
+        </Card>
+
+        <br />
+        <AntButton
+          block
+          type="primary"
+          size="large"
+          onClick={doneQuest}
+          className=" marginBottomBig"
+        >
+          운동 시작하기!
+        </AntButton>
+      </div>
     );
 
   if (done)
     return (
-      <Wrapper>
-        <Title>운동은 어떠셨나요?</Title>
-        <Box>
-          <Title>{feelTitle[feel - 1]}</Title>
-          <br />
-          <SemiTitle>{feelSub[feel - 1]}</SemiTitle>
-        </Box>
-        <Box>
+      <div className="marginSide underHeader">
+        <Card title="운동은 어떠셨나요?" className="textCenter">
+          <Title level={2}>{feelTitle[feel - 1]}</Title>
+          <Title level={4}>{feelSub[feel - 1]}</Title>
+        </Card>
+        <Card>
           <IOSSlider
             defaultValue={feel}
             step={1}
@@ -304,21 +196,26 @@ export default withRouter(({ history, location }) => {
             onChange={handleChange}
             value={feel}
           />
-          <Button
-            text="운동 끝!"
-            thick
-            color="blue"
-            mb
-            onClick={submitQuestSuccess}
-          />
-          <br />
-          <Button
-            text="운동하다가 중간에 실패했어요.."
-            thick
-            color="red"
+          <AntButton
             onClick={submitQuestFail}
-          />
-        </Box>
-      </Wrapper>
+            block
+            type="primary"
+            size="large"
+            className="marginBottomBig"
+          >
+            끝까지 다 했어요!
+          </AntButton>
+          <AntButton
+            onClick={submitQuestFail}
+            block
+            type="primary"
+            danger
+            size="large"
+            className="marginTopBig"
+          >
+            힘들어서 중간에 멈췄어요.
+          </AntButton>
+        </Card>
+      </div>
     );
-});
+};

@@ -66,8 +66,6 @@ export default ({ isLoggedIn }) => {
     [isLoggedIn, refetch]
   );
 
-  if (loading) return 'loading';
-
   return (
     <Header>
       <HeaderWrapper>
@@ -75,7 +73,7 @@ export default ({ isLoggedIn }) => {
           <Link to="/">아르핏</Link>
         </HeaderColumn>
         <HeaderColumn>
-          {data && data.me ? `${data.me.name}님` : '환영합니다.'}
+          {!loading && data && data.me ? `${data.me.name}님` : ''}
         </HeaderColumn>
       </HeaderWrapper>
     </Header>

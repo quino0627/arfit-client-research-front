@@ -1,0 +1,46 @@
+@import '~antd/dist/antd.css';
+
+.spinnerWrapper {
+  text-align: center;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  padding: 30px 50px;
+  margin: 20px 0;
+}
+
+.marginTop {
+  margin-top: 10px;
+}
+.marginBottom {
+  margin-bottom: 8px;
+}
+
+.marginTopBig {
+  margin-top: 14px;
+}
+.marginBottomBig {
+  margin-bottom: 12px;
+}
+
+.marginSide {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.machineImg {
+  max-height: 150px;
+  float: right;
+}
+
+.adImg {
+  width: 100px;
+  height: 100px;
+}
+
+.underHeader {
+  margin-top: 80px !important;
+}
+
+.textCenter {
+  text-align: center;
+}

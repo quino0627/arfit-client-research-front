@@ -10,6 +10,7 @@ import Themes from '../Styles/Themes';
 import Routes from './Routes';
 import Footer from './Footer';
 import Header from './Header';
+import '../Styles/App.css';
 
 const QUERY = gql`
   {
