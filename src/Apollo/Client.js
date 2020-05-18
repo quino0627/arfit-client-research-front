@@ -8,7 +8,15 @@ export default new ApolloClient({
     resolvers,
   },
   onError: ({ networkError, graphQLErrors }) => {
-    console.log('graphQLErrors', graphQLErrors);
+    console.log('graphQLErrors', graphQLErrors[0]);
+    if (
+      graphQLErrors[0].message === 'You need to l0g in to perform this action'
+    ) {
+      console.log('CAHTAHA');
+      localStorage.removeItem('token');
+      window.location.reload();
+    }
+
     console.log('networkError', networkError);
   },
   // headers: {

@@ -11,7 +11,9 @@ export default () => {
   });
 
   if (loading) return null;
-  //   console.log(data);
-  //   console.log(error);
+  if (error) {
+    localStorage.removeItem('token');
+    window.location.reload();
+  }
   return <FeedPresenter loading={loading} myQuests={myQuests} error={error} />;
 };

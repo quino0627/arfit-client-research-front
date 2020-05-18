@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { gql } from 'apollo-boost';
-import { useQuery } from '@apollo/react-hooks';
+import { useLazyQuery } from '@apollo/react-hooks';
 
 const Header = styled.header`
   width: 100%;
@@ -50,21 +50,40 @@ const ME = gql`
 `;
 
 export default ({ isLoggedIn }) => {
-  const { loading, data, refetch } = useQuery(ME);
+  const [getMe, { loading, data, error }] = useLazyQuery(ME);
   //   if (loading) {
   //     return null;
   //   }
   //   console.log(`Bearer ${localStorage.getItem('token')}`);
-
   useEffect(
     () => {
-      console.log('LOGINED');
       if (isLoggedIn) {
-        refetch();
+        getMe();
       }
     },
-    [isLoggedIn, refetch]
+    [getMe, isLoggedIn]
   );
+  // useEffect(
+  //   () => {
+  //     console.log('LOGINED');
+  //     if (isLoggedIn) {
+  //       refetch();
+  //     }
+  //   },
+  //   [isLoggedIn, refetch]
+  // );
+
+  if (loading)
+    return (
+      <Header>
+        <HeaderWrapper>
+          <HeaderColumn>
+            <Link to="/">아르핏</Link>
+          </HeaderColumn>
+          <HeaderColumn />
+        </HeaderWrapper>
+      </Header>
+    );
 
   return (
     <Header>
