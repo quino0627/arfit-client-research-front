@@ -197,7 +197,7 @@ export default ({
             value={feel}
           />
           <AntButton
-            onClick={submitQuestFail}
+            onClick={submitQuestSuccess}
             block
             type="primary"
             size="large"
